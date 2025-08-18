@@ -33,14 +33,12 @@ The system keeps a report of:
 
 Below are the test points for the API:
 
-
-```markdown
-| Test Case | Endpoint           | Method | Expected Result               |
-|-----------|--------------------|--------|--------------------------------|
-| 1         | `accounts/auth/logout/`  | POST   | It logouts from the system      |
-| 2         | `accounts/auth/login/`| POST   | Should login the user with email and possword |
-| 3         |  `accounts/auth/register/`    | POST  | Should register the user with username email and passowrd  |
-| 3         |  `accounts/auth/me/`    | GET  | Should return the information about the account    |
+| Endpoint              | Method | Description                  | Request Example | Response Example |
+|------------------------|--------|------------------------------|-----------------|------------------|
+| `/api/auth/register`   | POST   | Register a new user          | `{ "username": "kapil","email" : "kapil@gmail.com", "password": "******" }` | `{ "message": "User registered successfully" }` |
+| `/api/auth/login`      | POST   | Login with credentials       | `{ "username": "kapil", "password": "12345" }` | `{ "token": "custom token" }` |
+| `/api/auth/logout`    | POST   | Helps to logout from the system |`Token in the header section` | `Will logout from the system with no comments` |
+|  `/api/auth/me`    | GET    | Will give you the information about the id(account)       | `Token the i header` | `{id,email,username filed` |
 
 ---
 
