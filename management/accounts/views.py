@@ -7,7 +7,6 @@ from .models import User, Token
 from .serializers import RegistrationSerializer, LoginSerializer, UserSerializer
 
 
-# Simple home test view
 def home(request):
     return JsonResponse({
         'msg': 'Hello, this is accounts package which will handle the login, logout and register details'
@@ -17,7 +16,7 @@ def home(request):
 # Helper to fetch user from token
 def get_user_from_token(request):
     auth_header = request.headers.get("Authorization")
-    if not auth_header or not auth_header.startswith("Token "):  # <-- space after Token
+    if not auth_header or not auth_header.startswith("Token "):  
         return None 
     
     key = auth_header.split(" ")[1]
@@ -43,7 +42,7 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        serializer = LoginSerializer(data=request.data)  # fixed typo
+        serializer = LoginSerializer(data=request.data) 
         serializer.is_valid(raise_exception=True)
 
         email = serializer.validated_data["email"]
