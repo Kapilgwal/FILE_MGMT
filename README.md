@@ -38,7 +38,7 @@ Below are the test points for the API:
 | `/api/auth/register`   | POST   | Register a new user          | `{ "username": "kapil","email" : "kapil@gmail.com", "password": "******" }` | `{ "message": "User registered successfully" }` |
 | `/api/auth/login`      | POST   | Login with credentials       | `{ "username": "kapil", "password": "12345" }` | `{ "token": "custom token" }` |
 | `/api/auth/logout`    | POST   | Helps to logout from the system |`Token in the header section` | `Will logout from the system with no comments` |
-|  `/api/auth/me`    | GET    | Will give you the information about the id(account)       | `Token the i header` | `{id,email,username filed` |
+|  `/api/auth/me`    | GET    | Will give you the information about the id(account)       | `Token in the header section ` | `{id,email,username filed}` |
 
 ---
 
