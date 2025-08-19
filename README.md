@@ -45,5 +45,5 @@ Below are the test points for the API:
 ✅ You can also add:
 - **Authentication requirement** (Yes/No)  
 - **Status codes** (`200, 400, 401, 404`)  
-- **Headers** if needed  
+- **Headers**
 
