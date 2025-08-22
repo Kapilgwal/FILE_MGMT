@@ -1,12 +1,10 @@
-# files/views.py
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import json
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer,FileSerializer,FileSeenSerializer
 from accounts.utils import get_user_from_token
-from .models import User as LocalUser  # User model in files app
-
+from .models import User as LocalUser , File, FileSeen
 
 class UserView(APIView):
     """API to fetch or create/update user in files app using token from accounts app"""
@@ -17,7 +15,7 @@ class UserView(APIView):
         if not auth_header:
             return None
         try:
-            token_str = auth_header.split(" ")[1]  # Expect "Token <token>"
+            token_str = auth_header.split(" ")[1]  
         except IndexError:
             return None
         return get_user_from_token(token_str)
@@ -50,7 +48,6 @@ class UserView(APIView):
         gender = body.get("gender")
         contact_num = body.get("contact_num")
 
-        # Prepare data for serializer
         new_data = {
             "first_name": first_name,
             "last_name": last_name,
@@ -66,3 +63,57 @@ class UserView(APIView):
             return Response({"message": "Data Feeded Successfully","data" : new_data})
         else:
             return Response(serializer.errors, status=400)
+        
+        
+class FileView(APIView):
+
+    def get_user_from_request(self, request):
+        """Extract token from Authorization header and return authenticated user"""
+        auth_header = request.headers.get("Authorization")
+        if not auth_header:
+            return None
+        try:
+            token_str = auth_header.split(" ")[1]  
+        except IndexError:
+            return None
+        return get_user_from_token(token_str)
+
+    def get(self, request):
+        """Return user info from token"""
+        user = self.get_user_from_request(request)
+        if not user:
+            return Response({"error": "Unauthorized"}, status=401)
+
+        return Response({
+            "id": user.id,
+            "email": user.email,
+            "username": user.username,
+        })
+    
+    def post(self,request):
+        user = self.get_user_from_request(request)
+
+        if not user:
+            return Response({"error" : "Unauthorized"},status=401)
+        
+        filename = request.data.get("filename")
+        file = request.FILES.get("file")
+
+        if not filename or not file:
+            return Response({"error" : "Missing filename or file"},status=400)
+        
+        new_data = {
+            "filename" : filename,
+            "file" : file
+        }
+        
+
+        serializer = FileSerializer(data = new_data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"File data saved successfully"})
+
+
+        else:
+            return Response(serializer.errors,status = 400)
